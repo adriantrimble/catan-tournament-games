@@ -42,7 +42,7 @@ function checkIfArrayIsUnique(arr) {
 	return true;
 }
 
-function removeObjectsWithDuplicates(combinations) {
+function removeDuplicateSubArrays(combinations) {
 	let uniqueCombinations = [];
 
 	for (let i = 0; i < combinations.length; i++) {
@@ -57,16 +57,20 @@ function removeObjectsWithDuplicates(combinations) {
 	return uniqueCombinations;
 }
 
-function reallyRemoveDuplicates(combinations) {
+function reallyRemoveDuplicates(array) {
 
 	let finallyUnqiueCombinations = [];
 
-	for (let p = 0; p < combinations.length; p++) {
+	for (let p = 0; p < array.length; p++) {
 
-		let combination = combinations[p];
-		let j = parseInt(p + 1);
+		let combination = array[p];
+		let j = p + 1;
 
-		if(combination.toString() !== combinations[j].toString()) {
+		if (undefined !== array[j]) {
+			if (combination.toString() !== array[j].toString()) {
+				finallyUnqiueCombinations.push(combination);
+			}
+		} else {
 			finallyUnqiueCombinations.push(combination);
 		}
 	}
@@ -74,16 +78,16 @@ function reallyRemoveDuplicates(combinations) {
 	return finallyUnqiueCombinations;
 }
 
-let combinations = removeObjectsWithDuplicates(getCombinations(players));
+let combinations = removeDuplicateSubArrays(getCombinations(players));
 
 combinations.sort();
 
-combinations = reallyRemoveDuplicates(combinations);
+let finalCombinations = reallyRemoveDuplicates(combinations);
 
 
 var m = 0;
 var gameHtml = 
-finallyUnqiueCombinations.map(function (combination) {
+finalCombinations.map(function (combination) {
 		m++;
 		return '<tr><td>' + m + '</td><td>' + combination.join('</td><td>') + '</td></tr>';
 	}).join('');

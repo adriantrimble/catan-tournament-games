@@ -1,0 +1,29 @@
+	body {
+		font-family: sans-serif;
+	}
+	
+	main {
+		margin: 5ch auto;
+		max-width: 65ch;
+	}
+
+	table {
+		border-collapse: collapse;
+		width: 100%;
+	}
+
+	table td {
+		border-bottom: 1px solid #ccc;
+		padding: 0.25em;
+	}
+
+	table th {
+		border-bottom: 1px solid #ccc;
+		padding: 0.25em;
+		text-align: left;
+	}
+
+	table th:first-child,
+	table td:first-child {
+		text-align: center;
+	}
