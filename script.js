@@ -1,8 +1,20 @@
-let players = ['Adam', 'Adrian', 'Alex', 'Bill', 'Brittany', 'Carlene', 'Colin', 'Katrina', 'Les', 'Rob'];
+let players = [
+	'Adam',
+	'Adrian',
+	'Alex',
+	'Bill',
+	'Brittany',
+	'Carlene',
+	'Colin',
+	'Katrina',
+	'Les',
+	'Rob'
+];
+
 let playerCount = players.length;
 
 // Get all combinations of 4 players
-function getCombinations(players) {
+function getCombinationsFours(players) {
 	let combinations = [];
 	let playerCount = players.length;
 
@@ -28,6 +40,7 @@ function getCombinations(players) {
 	return combinations;
 }
 
+// Check if an array contains multiple of the same person
 function checkIfArrayIsUnique(arr) {
 	var map = {}, i, size;
 
@@ -42,6 +55,7 @@ function checkIfArrayIsUnique(arr) {
 	return true;
 }
 
+// Removes arrays where the same player appears more than once
 function removeDuplicateSubArrays(combinations) {
 	let uniqueCombinations = [];
 
@@ -49,6 +63,7 @@ function removeDuplicateSubArrays(combinations) {
 		let combination = combinations[i];
 		combination.sort();
 
+		// Used to check if an array contains multiple of the same person
 		if (checkIfArrayIsUnique(combination)) {
 			uniqueCombinations.push(combination);
 		}
@@ -57,6 +72,7 @@ function removeDuplicateSubArrays(combinations) {
 	return uniqueCombinations;
 }
 
+// Remove dupliate match-ups from a sorted array
 function reallyRemoveDuplicates(array) {
 
 	let finallyUnqiueCombinations = [];
@@ -64,9 +80,12 @@ function reallyRemoveDuplicates(array) {
 	for (let p = 0; p < array.length; p++) {
 
 		let combination = array[p];
+
+		// Array is sorted so we can compare to the next element
 		let j = p + 1;
 
 		if (undefined !== array[j]) {
+			// Stringify the arrays to compare
 			if (combination.toString() !== array[j].toString()) {
 				finallyUnqiueCombinations.push(combination);
 			}
@@ -78,13 +97,75 @@ function reallyRemoveDuplicates(array) {
 	return finallyUnqiueCombinations;
 }
 
-let combinations = removeDuplicateSubArrays(getCombinations(players));
+// Get combinations of 4 players, remove instances of multiple players in same game
+let combinations = removeDuplicateSubArrays(getCombinationsFours(players));
 
+// Sort
 combinations.sort();
 
-let finalCombinations = reallyRemoveDuplicates(combinations);
+// Remove duplicate match-ups
+let uniqueCombinations = reallyRemoveDuplicates(combinations);
 
+// Randomize the order of the match-ups
+uniqueCombinations.sort(() => Math.random() - 0.5);
 
+let finalCombinations = [];
+
+// Count number of games for a given player
+function countPlayerGames(combinations, player) {
+	let count = 0;
+
+	for (let i = 0; i < combinations.length; i++) {
+		let combination = combinations[i];
+
+		if (combination.includes(player)) {
+			count++;
+		}
+	}
+
+	return count;
+}
+
+function countAllPlayerGames(combinations, players) {
+	let gameCount = [];
+
+	for (let i = 0; i < players.length; i++) {
+		let player = players[i];
+		gameCount[i] = countPlayerGames(combinations, player);
+	}
+
+	return gameCount;
+}
+
+function getFinalGames(combinations) {
+	let finalGames = [];
+	let gamesPerPlayer = 20;
+
+	for (let i = 0; i < combinations.length; i++) {
+		let combination = combinations[i];
+		let gameCounts = [];
+
+		// Get the number of games for each player in this combination
+		for (let j = 0; j < combination.length; j++) {
+			let player = combination[j];
+
+			let games = countPlayerGames(finalGames, player);
+
+			gameCounts[j] = [player, games];
+		}
+
+		if (gameCounts[0][1] < gamesPerPlayer && gameCounts[1][1] < gamesPerPlayer && gameCounts[2][1] < gamesPerPlayer && gameCounts[3][1] < gamesPerPlayer) {
+			finalGames.push(combination);
+		}
+	}
+
+	return finalGames;
+}
+
+finalCombinations = getFinalGames(uniqueCombinations);
+// finalCombinations = uniqueCombinations;
+
+// Render the combinations
 var m = 0;
 var gameHtml = 
 finalCombinations.map(function (combination) {
