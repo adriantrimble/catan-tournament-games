@@ -1,3 +1,7 @@
+/**
+ * This logic could be made much easier using JS Maps (IIRC) cause they won't allow duplicates in each player set.
+ */
+
 let players = [
 	'Adam',
 	'Adrian',
@@ -7,7 +11,7 @@ let players = [
 	'Carlene',
 	'Colin',
 	'Katrina',
-	'Les',
+	'Jenny',
 	'Rob'
 ];
 
