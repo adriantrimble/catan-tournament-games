@@ -2,20 +2,11 @@
  * This logic could be made much easier using JS Maps (IIRC) cause they won't allow duplicates in each player set.
  */
 
-let players = [
-	'Adam',
-	'Adrian',
-	'Alex',
-	'Bill',
-	'Brittany',
-	'Carlene',
-	'Colin',
-	'Katrina',
-	'Jenny',
-	'Rob'
-];
+const refreshButt = document.getElementById('refresh-matchups');
 
-let playerCount = players.length;
+refreshButt.addEventListener('click', refreshCombinations);
+	
+refreshCombinations();
 
 // Get all combinations of 4 players
 function getCombinationsFours(players) {
@@ -101,20 +92,6 @@ function reallyRemoveDuplicates(array) {
 	return finallyUnqiueCombinations;
 }
 
-// Get combinations of 4 players, remove instances of multiple players in same game
-let combinations = removeDuplicateSubArrays(getCombinationsFours(players));
-
-// Sort
-combinations.sort();
-
-// Remove duplicate match-ups
-let uniqueCombinations = reallyRemoveDuplicates(combinations);
-
-// Randomize the order of the match-ups
-uniqueCombinations.sort(() => Math.random() - 0.5);
-
-let finalCombinations = [];
-
 // Count number of games for a given player
 function countPlayerGames(combinations, player) {
 	let count = 0;
@@ -166,17 +143,47 @@ function getFinalGames(combinations) {
 	return finalGames;
 }
 
-finalCombinations = getFinalGames(uniqueCombinations);
-// finalCombinations = uniqueCombinations;
+function refreshCombinations() {
+	let players = [
+		'Adam',
+		'Adrian',
+		'Alex',
+		'Bill',
+		'Brittany',
+		'Carlene',
+		'Colin',
+		'Katrina',
+		'Jenny',
+		'Rob'
+	];
+	
+	let playerCount = players.length;
+	
+	// Get combinations of 4 players, remove instances of multiple players in same game
+	let combinations = removeDuplicateSubArrays(getCombinationsFours(players));
+	
+	// Sort
+	combinations.sort();
+	
+	// Remove duplicate match-ups
+	let uniqueCombinations = reallyRemoveDuplicates(combinations);
+	
+	// Randomize the order of the match-ups
+	uniqueCombinations.sort(() => Math.random() - 0.5);
 
-// Render the combinations
-var m = 0;
-var gameHtml = 
-finalCombinations.map(function (combination) {
-		m++;
-		return '<tr><td>' + m + '</td><td>' + combination.join('</td><td>') + '</td></tr>';
-	}).join('');
+	finalCombinations = getFinalGames(uniqueCombinations);
+	// finalCombinations = uniqueCombinations;
 
-var tableHtml = '<table><thead><tr><th>Game #</th><th>Player 1</th><th>Player 2</th><th>Player 3</th><th>Player 4</th></tr></thead>' + gameHtml + '</table>';
+	// Render the combinations
+	var m = 0;
+	var gameHtml = 
+	finalCombinations.map(function (combination) {
+			m++;
+			return '<tr><td>' + m + '</td><td>' + combination.join('</td><td>') + '</td></tr>';
+		}).join('');
 
-document.getElementById("matchups").innerHTML = tableHtml;
+	var tableHtml = '<table><thead><tr><th>Game #</th><th>Player 1</th><th>Player 2</th><th>Player 3</th><th>Player 4</th></tr></thead>' + gameHtml + '</table>';
+
+	document.getElementById("matchups").innerHTML = tableHtml;
+
+}
