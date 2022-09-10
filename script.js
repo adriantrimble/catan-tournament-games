@@ -140,39 +140,59 @@ function getFinalGames(combinations) {
 		}
 	}
 
+	// if (finalGames.length < 50) {
+	// 	return getFinalGames(combinations);
+	// }
+
 	return finalGames;
 }
 
 function refreshCombinations() {
-	let players = [
-		'Adam',
-		'Adrian',
-		'Alex',
-		'Bill',
-		'Brittany',
-		'Carlene',
-		'Colin',
-		'Katrina',
-		'Jenny',
-		'Rob'
-	];
-	
-	let playerCount = players.length;
-	
-	// Get combinations of 4 players, remove instances of multiple players in same game
-	let combinations = removeDuplicateSubArrays(getCombinationsFours(players));
-	
-	// Sort
-	combinations.sort();
-	
-	// Remove duplicate match-ups
-	let uniqueCombinations = reallyRemoveDuplicates(combinations);
-	
-	// Randomize the order of the match-ups
-	uniqueCombinations.sort(() => Math.random() - 0.5);
 
-	finalCombinations = getFinalGames(uniqueCombinations);
-	// finalCombinations = uniqueCombinations;
+	let Combine = () => {
+
+		let combos = [];
+
+		while (combos.length < 50) {
+			
+			let players = [
+				'Adam',
+				'Adrian',
+				'Alex',
+				'Bill',
+				'Brittany',
+				'Carlene',
+				'Colin',
+				'Katrina',
+				'Jenny',
+				'Rob'
+			];
+			
+			// Get combinations of 4 players, remove instances of multiple players in same game
+			let combinations = removeDuplicateSubArrays(getCombinationsFours(players));
+			
+			// Sort
+			combinations.sort();
+			
+			// Remove duplicate match-ups
+			let uniqueCombinations = reallyRemoveDuplicates(combinations);
+			
+			// Randomize the order of the match-ups
+			uniqueCombinations.sort(() => Math.random() - 0.5);
+			
+			combos = getFinalGames(uniqueCombinations);
+		
+		}
+
+		combos = shuffleArray(combos);
+
+		return combos;
+
+	};
+
+	const app = document.querySelector('main');
+
+	finalCombinations = Combine();	
 
 	// Render the combinations
 	var m = 0;
@@ -187,3 +207,17 @@ function refreshCombinations() {
 	document.getElementById("matchups").innerHTML = tableHtml;
 
 }
+
+function shuffleArray(array) {
+	for (var i = array.length - 1; i > 0; i--) {
+	
+		// Generate random number
+		var j = Math.floor(Math.random() * (i + 1));
+					
+		var temp = array[i];
+		array[i] = array[j];
+		array[j] = temp;
+	}
+		
+	return array;
+ }

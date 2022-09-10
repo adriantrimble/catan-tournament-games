@@ -24,6 +24,8 @@ main {
 	border: 4px solid var(--accent-2);
 	margin: 5ch auto;
 	padding: 2rem 4rem;
+	position: relative;
+	overflow: hidden;
 	max-width: 65ch;
 }
 
